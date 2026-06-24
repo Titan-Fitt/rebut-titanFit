@@ -1181,7 +1181,28 @@ a{
     transition: .3s;
     box-sizing: border-box;
 }
+.escolha-professor-aluno {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
+.botao-escolha {
+  flex: 1;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* quando clicar */
+.botao-escolha.ativo {
+  background: #ff7d1a;
+  color: #fff;
+}
 .caixa-cadastro input::placeholder {
     color: #999;
 }
