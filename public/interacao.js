@@ -221,3 +221,4 @@ const observerPagamento = new IntersectionObserver((entries) => {
 });
 
 observerPagamento.observe(pagamento);
+
