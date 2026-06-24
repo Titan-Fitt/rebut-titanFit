@@ -207,21 +207,30 @@ if (pagamento) {
 }
 
 /* =======================================================
-   BOTÃO PROFESSOR / USUÁRIO
+   BOTÃO PROFESSOR / USUÁRIO (COM ENVIO PRO BACKEND)
 ======================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     const botoes = document.querySelectorAll(".botao-escolha");
+    const inputTipo = document.getElementById("tipoUsuario");
 
-    if (botoes.length > 0) {
+    if (botoes.length > 0 && inputTipo) {
 
         botoes.forEach((botao) => {
 
             botao.addEventListener("click", () => {
 
+                // remove seleção anterior
                 botoes.forEach(b => b.classList.remove("ativo"));
+
+                // ativa o clicado
                 botao.classList.add("ativo");
+
+                // 🔥 ESSA LINHA É A MAIS IMPORTANTE
+                inputTipo.value = botao.textContent.toLowerCase();
+
+                console.log("Tipo selecionado:", inputTipo.value);
 
             });
 
