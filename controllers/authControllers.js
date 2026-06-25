@@ -6,7 +6,7 @@ const fichas = [];
 
 // Função para cadastrar usuario
 function cadastrarUsuario(req, res) {
-    const { nome, email, senha, tipo } = req.body;
+    const { nome, email, senha, tipo, cref, especialidade } = req.body;
 
     // 🔒 Validação
     if (!nome || !email || !senha || !tipo) {
@@ -17,6 +17,16 @@ function cadastrarUsuario(req, res) {
         `);
     }
 
+    // Se for professor, exige CREF e especialidade
+    if (tipo === "professor" && (!cref || !especialidade)) {
+        return res.send(`
+            <h1>Erro ao realizar cadastro</h1>
+            <p>Preencha os campos de CREF e Especialidade</p>
+            <a href="/cadastro.html">Voltar</a>
+        `);
+    }
+
+    const usuarioExistente = usuarios.find((usuario) => usuario.email === email);
     // 🔍 Verifica se já existe
     const usuarioExistente = usuarios.find(
         (usuario) => usuario.email === email
@@ -31,9 +41,15 @@ function cadastrarUsuario(req, res) {
         id: Date.now(),
         nome,
         email,
-        senha,
-        tipo // 🔥 agora salvando o tipo
+        senha, // ⚠️ Ideally use bcrypt to hash before storing
+        tipo: tipo || "usuario",
     };
+
+    // Só adiciona os campos extras se for professor
+    if (novoUsuario.tipo === "professor") {
+        novoUsuario.cref = cref;
+        novoUsuario.especialidade = especialidade;
+    }
 
     usuarios.push(novoUsuario);
 

@@ -37,6 +37,7 @@ a{
 }
 #menu ul li a:hover {
   color: #CE5500;
+  text-decoration: underline;
 }
 
 .menu-toggle,
@@ -403,7 +404,7 @@ a{
 }
 
 .quem-texto li::before {
-  content: "• ";
+  content: "";
   color: #fff;
 }
 
@@ -1282,6 +1283,10 @@ a{
     font-size: 14px;
 }
 
+.footer-nav a:hover {
+  color: #f26807;
+}
+
 .footer-logo img {
     align-items: center;
     justify-content: center;
@@ -1302,6 +1307,7 @@ a{
 .icones-redes img {
     width: 42px;
     height: 42px;
+    cursor: pointer;
 }
 
 .footer-baixo {

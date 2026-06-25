@@ -207,30 +207,36 @@ if (pagamento) {
 }
 
 /* =======================================================
-   BOTÃO PROFESSOR / USUÁRIO (COM ENVIO PRO BACKEND)
+   CADASTRO - ESCOLHA PROFESSOR / USUÁRIO
 ======================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     const botoes = document.querySelectorAll(".botao-escolha");
-    const inputTipo = document.getElementById("tipoUsuario");
+    const camposProfessor = document.getElementById("camposProfessor");
+    const tipoInput = document.getElementById("tipoInput");
 
-    if (botoes.length > 0 && inputTipo) {
+    if (botoes.length > 0) {
 
         botoes.forEach((botao) => {
 
             botao.addEventListener("click", () => {
 
-                // remove seleção anterior
+                // Marca visualmente qual botão está ativo
                 botoes.forEach(b => b.classList.remove("ativo"));
-
-                // ativa o clicado
                 botao.classList.add("ativo");
 
-                // 🔥 ESSA LINHA É A MAIS IMPORTANTE
-                inputTipo.value = botao.textContent.toLowerCase();
+                const tipo = botao.dataset.tipo; // "professor" ou "usuario"
 
-                console.log("Tipo selecionado:", inputTipo.value);
+                // Atualiza o campo escondido que vai junto no formulário
+                if (tipoInput) {
+                    tipoInput.value = tipo;
+                }
+
+                // Mostra os campos extras só se for professor
+                if (camposProfessor) {
+                    camposProfessor.style.display = tipo === "professor" ? "block" : "none";
+                }
 
             });
 
