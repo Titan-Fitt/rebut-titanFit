@@ -17,15 +17,13 @@ if (sobreNos) {
             if (entry.isIntersecting) {
 
                 sobreNos.classList.add("animar");
-
                 observerSobre.disconnect();
+
             }
 
         });
 
-    }, {
-        threshold: 0.3
-    });
+    }, { threshold: 0.3 });
 
     observerSobre.observe(sobreNos);
 }
@@ -61,9 +59,7 @@ if (secaoPlanosHome && planosHome.length > 0) {
 
         });
 
-    }, {
-        threshold: 0.3
-    });
+    }, { threshold: 0.3 });
 
     observerPlanos.observe(secaoPlanosHome);
 }
@@ -95,9 +91,7 @@ if (servicos.length > 0) {
 
         });
 
-    }, {
-        threshold: 0.2
-    });
+    }, { threshold: 0.2 });
 
     servicos.forEach((servico) => {
         observerServicos.observe(servico);
@@ -109,13 +103,11 @@ if (servicos.length > 0) {
 ======================================================= */
 
 const cardsContainer = document.querySelector(".pagina-planos-cards");
-
 const cards = document.querySelectorAll(".pagina-plano-card");
 
 function destacarCardCentral() {
 
-    if (!cardsContainer || cards.length === 0)
-        return;
+    if (!cardsContainer || cards.length === 0) return;
 
     const centroTela = window.innerWidth / 2;
 
@@ -125,18 +117,12 @@ function destacarCardCentral() {
     cards.forEach((card) => {
 
         const rect = card.getBoundingClientRect();
-
-        const centroCard =
-            rect.left + rect.width / 2;
-
-        const distancia =
-            Math.abs(centroTela - centroCard);
+        const centroCard = rect.left + rect.width / 2;
+        const distancia = Math.abs(centroTela - centroCard);
 
         if (distancia < menorDistancia) {
-
             menorDistancia = distancia;
             cardMaisCentral = card;
-
         }
 
     });
@@ -152,73 +138,110 @@ function destacarCardCentral() {
 
 if (cardsContainer && cards.length > 0) {
 
-    cardsContainer.addEventListener(
-        "scroll",
-        destacarCardCentral
-    );
-
-    window.addEventListener(
-        "resize",
-        destacarCardCentral
-    );
-
-    window.addEventListener(
-        "load",
-        destacarCardCentral
-    );
+    cardsContainer.addEventListener("scroll", destacarCardCentral);
+    window.addEventListener("resize", destacarCardCentral);
+    window.addEventListener("load", destacarCardCentral);
 }
+
+/* =======================================================
+   ANIMAÇÃO ENTRADA PLANOS
+======================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     const cards = document.querySelectorAll(".pagina-plano-card");
+    const secaoPlanos = document.querySelector(".pagina-planos-cards");
 
-    const observer = new IntersectionObserver((entries) => {
+    if (secaoPlanos && cards.length > 0) {
+
+        const observer = new IntersectionObserver((entries) => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    cards.forEach((card, index) => {
+
+                        setTimeout(() => {
+                            card.classList.add("animar");
+                        }, index * 400);
+
+                    });
+
+                    observer.disconnect();
+                }
+
+            });
+
+        }, { threshold: 0.2 });
+
+        observer.observe(secaoPlanos);
+    }
+
+});
+
+/* =======================================================
+   ANIMAÇÃO PAGAMENTO
+======================================================= */
+
+const pagamento = document.querySelector(".pagina-pagamento");
+
+if (pagamento) {
+
+    const observerPagamento = new IntersectionObserver((entries) => {
 
         entries.forEach(entry => {
 
-            if(entry.isIntersecting){
+            if (entry.isIntersecting) {
 
-                cards.forEach((card, index) => {
+                pagamento.classList.add("animar");
+                observerPagamento.unobserve(entry.target);
 
-                    setTimeout(() => {
-                        card.classList.add("animar");
-                    }, index * 400);
-
-                });
-
-                observer.disconnect();
             }
 
         });
 
-    }, { threshold: 0.2 });
+    }, { threshold: 0.3 });
 
-    observer.observe(document.querySelector(".pagina-planos-cards"));
+    observerPagamento.observe(pagamento);
+}
+
+/* =======================================================
+   CADASTRO - ESCOLHA PROFESSOR / USUÁRIO
+======================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const botoes = document.querySelectorAll(".botao-escolha");
+    const camposProfessor = document.getElementById("camposProfessor");
+    const tipoInput = document.getElementById("tipoInput");
+
+    if (botoes.length > 0) {
+
+        botoes.forEach((botao) => {
+
+            botao.addEventListener("click", () => {
+
+                // Marca visualmente qual botão está ativo
+                botoes.forEach(b => b.classList.remove("ativo"));
+                botao.classList.add("ativo");
+
+                const tipo = botao.dataset.tipo; // "professor" ou "usuario"
+
+                // Atualiza o campo escondido que vai junto no formulário
+                if (tipoInput) {
+                    tipoInput.value = tipo;
+                }
+
+                // Mostra os campos extras só se for professor
+                if (camposProfessor) {
+                    camposProfessor.style.display = tipo === "professor" ? "block" : "none";
+                }
+
+            });
+
+        });
+
+    }
 
 });
-
-
-
-//ANIMAÇÃO PAGAMENTO
-
-const pagamento = document.querySelector(".pagina-pagamento");
-
-const observerPagamento = new IntersectionObserver((entries) => {
-
-    entries.forEach(entry => {
-
-        if (entry.isIntersecting) {
-
-            pagamento.classList.add("animar");
-
-            observerPagamento.unobserve(entry.target);
-        }
-
-    });
-
-}, {
-    threshold: 0.3
-});
-
-observerPagamento.observe(pagamento);
-
