@@ -8,10 +8,11 @@ const fichas = [];
 function cadastrarUsuario(req, res) {
     const { nome, email, senha, tipo, cref, especialidade } = req.body;
 
-    if (!nome || !email || !senha) {
+    // 🔒 Validação
+    if (!nome || !email || !senha || !tipo) {
         return res.send(`
             <h1>Erro ao realizar cadastro</h1>
-            <p>Preencha todos os campos</p>
+            <p>Preencha todos os campos e selecione o tipo de usuário</p>
             <a href="/cadastro.html">Voltar</a>
         `);
     }
@@ -26,11 +27,16 @@ function cadastrarUsuario(req, res) {
     }
 
     const usuarioExistente = usuarios.find((usuario) => usuario.email === email);
+    // 🔍 Verifica se já existe
+    const usuarioExistente = usuarios.find(
+        (usuario) => usuario.email === email
+    );
 
     if (usuarioExistente) {
         return res.redirect("/cadastro?erro=email");
     }
 
+    // 🧠 Cria usuário
     const novoUsuario = {
         id: Date.now(),
         nome,
@@ -46,11 +52,21 @@ function cadastrarUsuario(req, res) {
     }
 
     usuarios.push(novoUsuario);
-    console.log("Usuários cadastrados:", usuarios);
 
-    res.redirect(`/ficha.html?email=${encodeURIComponent(email)}`);
+    console.log("Usuários:", usuarios);
+
+    // 🚀 REDIRECIONAMENTO INTELIGENTE
+    if (tipo === "usuario") {
+        return res.redirect(`/ficha.html?email=${encodeURIComponent(email)}`);
+    }
+
+    if (tipo === "professor") {
+        return res.redirect(`/ficha-professor.html?email=${encodeURIComponent(email)}`);
+    }
+
+    // fallback
+    return res.send("Tipo de usuário inválido");
 }
-
 // Função para preencher a ficha
 function fichaUsuario(req, res) {
     const { idade, altura, peso, objetivo, nivel, email } = req.body;
